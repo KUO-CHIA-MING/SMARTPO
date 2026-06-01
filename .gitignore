@@ -8,6 +8,6 @@ node_modules/
 dist/
 build/
 
-# 排除作業系統暫存檔
+# 排除作業系統暫存檔及不必要檔案
 .DS_Store
 Thumbs.db
