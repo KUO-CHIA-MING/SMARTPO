@@ -1,5 +1,6 @@
 # 排除環境變數設定檔（內含資料庫帳密，絕對不能推上 GitHub）
 .env
+.env.example
 .env.local
 .env.development.local
 

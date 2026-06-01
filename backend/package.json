@@ -1,0 +1,14 @@
+{
+  "name": "smartpo-backend",
+  "version": "1.0.0",
+  "description": "SmartPO 後端 API 服務",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mssql": "^10.0.2"
+  }
+}
