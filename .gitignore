@@ -1,0 +1,13 @@
+# 排除環境變數設定檔（內含資料庫帳密，絕對不能推上 GitHub）
+.env
+.env.local
+.env.development.local
+
+# 排除前端與後端的依賴套件套件夾
+node_modules/
+dist/
+build/
+
+# 排除作業系統暫存檔
+.DS_Store
+Thumbs.db
