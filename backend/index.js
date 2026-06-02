@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { query, sql } from './config/db.js';
 import { initSqliteDb } from './database/sqlite_db.js';
-import focusInventoryRouter from './routes/focusInventory.js';
+import focusInventoryRoutes from './routes/focusInventory.js';
+import sharedInventoryRoutes from './routes/sharedInventory.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -257,10 +258,9 @@ app.get('/api/inventory/drilldown', async (req, res) => {
   }
 });
 
-// ==========================================
-// 5. 註冊重點庫存查詢路由
-// ==========================================
-app.use('/api/focus-inventory', focusInventoryRouter);
+// Routes
+app.use('/api/focus-inventory', focusInventoryRoutes);
+app.use('/api/shared-inventory', sharedInventoryRoutes);
 
 // 初始化 SQLite 資料庫後再啟動伺服器
 initSqliteDb().then(() => {

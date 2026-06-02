@@ -8,14 +8,15 @@ import { DrillDownModal } from './components/DrillDownModal';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { FocusInventoryList } from './views/FocusInventory/FocusInventoryList';
 import { FocusInventoryAdmin } from './views/FocusInventory/FocusInventoryAdmin';
-import { Target } from 'lucide-react';
+import { SharedInventorySearch } from './views/SharedInventory/SharedInventorySearch';
+import { Target, PackageSearch } from 'lucide-react';
 
 // 依據 .env 檔案中的 PORT=3001 設定，對齊後端服務埠號
 const BACKEND_URL = 'http://localhost:3001/api';
 
 function App() {
   // 0. 視圖狀態
-  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard', 'focus-list', 'focus-admin'
+  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard', 'focus-list', 'focus-admin', 'shared-inventory'
 
   // 1. 各數據模組的 State
   const [levelData, setLevelData] = useState(null);
@@ -109,17 +110,39 @@ function App() {
 
           {/* 導覽按鈕區 */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setCurrentView(currentView === 'dashboard' ? 'focus-list' : 'dashboard')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm ${
-                currentView !== 'dashboard' 
-                  ? 'bg-indigo-600 text-white shadow-indigo-600/20' 
-                  : 'bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50'
-              }`}
-            >
-              <Target className="w-4 h-4" />
-              {currentView === 'dashboard' ? '重點庫存狀態' : '返回總覽儀表板'}
-            </button>
+            {currentView !== 'dashboard' && (
+              <button
+                onClick={() => setCurrentView('dashboard')}
+                className="flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                總覽儀表板
+              </button>
+            )}
+
+            {currentView !== 'focus-list' && currentView !== 'focus-admin' && (
+              <button
+                onClick={() => setCurrentView('focus-list')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm ${
+                  currentView === 'focus-list' 
+                    ? 'bg-indigo-600 text-white shadow-indigo-600/20' 
+                    : 'bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50'
+                }`}
+              >
+                <Target className="w-4 h-4" />
+                重點庫存狀態
+              </button>
+            )}
+            
+            {currentView !== 'shared-inventory' && (
+              <button 
+                  onClick={() => setCurrentView('shared-inventory')}
+                  className="flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+              >
+                  <PackageSearch className="w-4 h-4" />
+                  料號/訂單庫存
+              </button>
+            )}
 
             {/* 重新整理與刷新按鈕 */}
             {currentView === 'dashboard' && (
@@ -215,6 +238,10 @@ function App() {
         
         {currentView === 'focus-admin' && (
           <FocusInventoryAdmin onBackClick={() => setCurrentView('focus-list')} />
+        )}
+
+        {currentView === 'shared-inventory' && (
+          <SharedInventorySearch />
         )}
 
       </main>
