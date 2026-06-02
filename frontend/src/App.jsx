@@ -7,7 +7,8 @@ import { TurnoverAgeChart } from './components/TurnoverAgeChart';
 import { DrillDownModal } from './components/DrillDownModal';
 import { SkeletonLoader } from './components/SkeletonLoader';
 
-const BACKEND_URL = 'http://localhost:5000/api';
+// 依據 .env 檔案中的 PORT=3001 設定，對齊後端服務埠號
+const BACKEND_URL = 'http://localhost:3001/api';
 
 function App() {
   // 1. 各數據模組的 State
