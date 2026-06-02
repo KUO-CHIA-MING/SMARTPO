@@ -9,7 +9,8 @@ import { SkeletonLoader } from './components/SkeletonLoader';
 import { FocusInventoryList } from './views/FocusInventory/FocusInventoryList';
 import { FocusInventoryAdmin } from './views/FocusInventory/FocusInventoryAdmin';
 import { SharedInventorySearch } from './views/SharedInventory/SharedInventorySearch';
-import { Target, PackageSearch } from 'lucide-react';
+import AIAssistantChat from './components/AIAssistantChat';
+import { Target, PackageSearch, Sparkles } from 'lucide-react';
 
 // 依據 .env 檔案中的 PORT=3001 設定，對齊後端服務埠號
 const BACKEND_URL = 'http://localhost:3001/api';
@@ -34,6 +35,9 @@ function App() {
   const [modalRange, setModalRange] = useState('');
   const [modalData, setModalData] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
+
+  // 3.5 AI 採購助理 Modal 狀態
+  const [isAiChatOpen, setIsAiChatOpen] = useState(false);
 
   // 4. API 資料抓取函數
   const fetchData = async (refresh = false) => {
@@ -143,6 +147,15 @@ function App() {
                   料號/訂單庫存
               </button>
             )}
+
+            {/* ✨ 智慧 AI 採購助理按鈕 */}
+            <button
+                onClick={() => setIsAiChatOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 rounded-2xl text-xs font-bold transition-all shadow-md shadow-indigo-500/30 ml-2"
+            >
+                <Sparkles className="w-4 h-4 animate-pulse" />
+                智慧 AI 助理
+            </button>
 
             {/* 重新整理與刷新按鈕 */}
             {currentView === 'dashboard' && (
@@ -255,6 +268,12 @@ function App() {
         range={modalRange}
         data={modalData}
         isLoading={modalLoading}
+      />
+
+      {/* 5. 智慧 AI 採購助理 Modal */}
+      <AIAssistantChat 
+        isOpen={isAiChatOpen}
+        onClose={() => setIsAiChatOpen(false)}
       />
     </div>
   );

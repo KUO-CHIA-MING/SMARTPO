@@ -4,6 +4,7 @@ import { query, sql } from './config/db.js';
 import { initSqliteDb } from './database/sqlite_db.js';
 import focusInventoryRoutes from './routes/focusInventory.js';
 import sharedInventoryRoutes from './routes/sharedInventory.js';
+import aiAssistantRoutes from './routes/aiAssistant.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -261,6 +262,7 @@ app.get('/api/inventory/drilldown', async (req, res) => {
 // Routes
 app.use('/api/focus-inventory', focusInventoryRoutes);
 app.use('/api/shared-inventory', sharedInventoryRoutes);
+app.use('/api/ai', aiAssistantRoutes);
 
 // 初始化 SQLite 資料庫後再啟動伺服器
 initSqliteDb().then(() => {
