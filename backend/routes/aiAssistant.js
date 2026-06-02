@@ -76,7 +76,7 @@ router.post('/query', rateLimiter, async (req, res) => {
 
     try {
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
         // ---------------------------------------------------------
         // 階段一：防幻覺核心架構 (Text-to-SQL)

@@ -10,8 +10,8 @@
 ---
 
 ## 2. 系統架構與模型選擇 (System Architecture)
-- **大語言模型 (LLM)**：採用 **Google Gemini API (Gemini 1.5 Flash/Pro)**。
-  - **節費與配額控制 (Rate Limiting & Budget)**：後端實作請求次數攔截器 (Rate Limiter)。可設定每日呼叫次數上限 (例如：100 次/天)。若超過限制，系統會直接中斷並提示使用者「今日 AI 查詢額度已達上限」，100% 避免 Google API 產生超額費用。
+- **大語言模型 (LLM)**：採用 **Google Gemini API**。因應企業版 API 金鑰最新世代規範，系統底層精準掛載並適配 `gemini-flash-latest` 等最新模型，確保獲得最優越的推理效能。
+- **節費與配額控制 (Rate Limiting & Budget)**：後端實作請求次數攔截器 (Rate Limiter)。可設定每日呼叫次數上限 (例如：100 次/天)。若超過限制，系統會直接中斷並提示使用者「今日 AI 查詢額度已達上限」，100% 避免 Google API 產生超額費用。
 - **對話狀態 (Stateless)**：無歷史紀錄儲存。為確保資安與降低伺服器負載，每次開啟對話框皆為全新對話，不保留歷史查詢軌跡。
 
 ---
