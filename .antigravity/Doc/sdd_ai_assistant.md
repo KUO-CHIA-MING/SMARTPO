@@ -17,12 +17,18 @@
 ---
 
 ## 3. 資料庫查詢範圍 (Context Boundary)
-為確保 AI 產出的 SQL 精準且不越界，系統在 RAG (檢索增強生成) 階段，僅會提供以下 SAP B1 資料表的 Schema 給 AI：
-- **物料與庫存**：`OITM` (物料基本資料), `OITW` (倉庫庫存)
-- **業務夥伴**：`OCRD` (供應商/客戶基本檔)
-- **採購流程**：`OPOR` / `POR1` (採購單), `OPDN` / `PDN1` (採購收貨單 GRPO)
-- **銷售流程**：`ORDR` / `RDR1` (銷售單)
-- **財務發票**：`OPCH` / `PCH1` (A/P 發票), `ODPO` / `DPO1` (A/P 訂金發票)
+為確保 AI 產出的 SQL 精準且不越界，系統在 RAG (檢索增強生成) 階段，將僅提供以下四大模組的核心 SAP B1 資料表 Schema 給 AI，並嚴格排除無關之財務或管理模組：
+
+- **✅ 允許開放之範圍 (White-listed Modules)**：
+  1. **存貨模組 (Inventory)**：`OITM` (物料主檔), `OITW` (倉庫庫存), `OITB` (物料群組), `OIGE`/`IGE1` (發料), `OIGN`/`IGN1` (收料), `OWTR`/`WTR1` (庫存調撥), `OINM` (庫存異動紀錄).
+  2. **採購模組 (Purchasing)**：`OPRQ`/`PRQ1` (採購申請), `OPOR`/`POR1` (採購單), `OPDN`/`PDN1` (採購收貨 GRPO), `ORPD`/`RPD1` (採購退貨), `OPCH`/`PCH1` (AP發票), `ODPO`/`DPO1` (AP訂金).
+  3. **銷售模組 (Sales)**：`OQUT`/`QUT1` (銷售報價), `ORDR`/`RDR1` (銷售訂單), `ODLN`/`DLN1` (交貨), `ORDN`/`RDN1` (退貨), `OINV`/`INV1` (AR發票).
+  4. **生產模組 (Production)**：`OITT`/`ITT1` (BOM 物料清單), `OWOR`/`WOR1` (生產工單).
+  5. **共用基礎檔 (Base Data)**：`OCRD` (供應商/客戶基本檔).
+
+- **🚫 嚴格排除之範圍 (Strictly Excluded Modules)**：
+  - **財務 (Financials)**、**銀行 (Banking)**、**總帳 (GL)**、**管理 (Administration)** 模組。
+  - 例如：`OACT` (會計科目表), `OJDT`/`JDT1` (日記帳分錄), `ORCT` (收款), `OVPM` (付款) 等與採購不具直接關聯之機敏財務表單，**絕對不會提供 Schema 且拒絕查閱**。
 
 ---
 
