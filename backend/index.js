@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { query, sql } from './config/db.js';
+import { initSqliteDb } from './database/sqlite_db.js';
+import focusInventoryRouter from './routes/focusInventory.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -255,6 +257,16 @@ app.get('/api/inventory/drilldown', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`SmartPO 實體資料庫 API 服務已成功啟動！監聽 Port: ${PORT}`);
+// ==========================================
+// 5. 註冊重點庫存查詢路由
+// ==========================================
+app.use('/api/focus-inventory', focusInventoryRouter);
+
+// 初始化 SQLite 資料庫後再啟動伺服器
+initSqliteDb().then(() => {
+  app.listen(PORT, () => {
+    console.log(`SmartPO 實體資料庫 API 服務已成功啟動！監聽 Port: ${PORT}`);
+  });
+}).catch(err => {
+  console.error('SQLite 資料庫初始化失敗，伺服器無法啟動:', err);
 });

@@ -6,11 +6,17 @@ import { DeliveryRateGauges } from './components/DeliveryRateGauges';
 import { TurnoverAgeChart } from './components/TurnoverAgeChart';
 import { DrillDownModal } from './components/DrillDownModal';
 import { SkeletonLoader } from './components/SkeletonLoader';
+import { FocusInventoryList } from './views/FocusInventory/FocusInventoryList';
+import { FocusInventoryAdmin } from './views/FocusInventory/FocusInventoryAdmin';
+import { Target } from 'lucide-react';
 
 // 依據 .env 檔案中的 PORT=3001 設定，對齊後端服務埠號
 const BACKEND_URL = 'http://localhost:3001/api';
 
 function App() {
+  // 0. 視圖狀態
+  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard', 'focus-list', 'focus-admin'
+
   // 1. 各數據模組的 State
   const [levelData, setLevelData] = useState(null);
   const [poData, setPoData] = useState(null);
@@ -101,23 +107,42 @@ function App() {
             </div>
           </div>
 
-          {/* 重新整理與刷新按鈕 */}
-          <button
-            onClick={() => fetchData(true)}
-            disabled={isLoading || isRefreshing}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-950 text-white hover:bg-slate-800 rounded-2xl text-xs font-bold transition-all shadow-md shadow-slate-950/10 disabled:opacity-50"
-          >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? '重新整理中...' : '重新整理'}
-          </button>
+          {/* 導覽按鈕區 */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setCurrentView(currentView === 'dashboard' ? 'focus-list' : 'dashboard')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all shadow-sm ${
+                currentView !== 'dashboard' 
+                  ? 'bg-indigo-600 text-white shadow-indigo-600/20' 
+                  : 'bg-white text-indigo-600 border border-indigo-200 hover:bg-indigo-50'
+              }`}
+            >
+              <Target className="w-4 h-4" />
+              {currentView === 'dashboard' ? '重點庫存狀態' : '返回總覽儀表板'}
+            </button>
+
+            {/* 重新整理與刷新按鈕 */}
+            {currentView === 'dashboard' && (
+              <button
+                onClick={() => fetchData(true)}
+                disabled={isLoading || isRefreshing}
+                className="flex items-center gap-2 px-4 py-2 bg-slate-950 text-white hover:bg-slate-800 rounded-2xl text-xs font-bold transition-all shadow-md shadow-slate-950/10 disabled:opacity-50"
+              >
+                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {isRefreshing ? '重新整理中...' : '重新整理'}
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
       {/* 儀表板主要內容區 */}
-      <main className="max-w-7xl mx-auto px-6 mt-8 space-y-10">
+      <main className="max-w-7xl mx-auto px-6 mt-8 space-y-10 animate-in fade-in duration-300">
         
-        {/* 全域系統數據狀態橫幅 */}
-        <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        {currentView === 'dashboard' && (
+          <>
+            {/* 全域系統數據狀態橫幅 */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="space-y-1">
             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
               👋 歡迎回來，採購管理主管！
@@ -179,8 +204,18 @@ function App() {
             <SkeletonLoader type="bar" count={1} />
           ) : (
             turnoverData && <TurnoverAgeChart data={turnoverData} onDrillDown={handleDrillDown} />
-          )}
-        </section>
+            )}
+          </section>
+        </>
+        )}
+
+        {currentView === 'focus-list' && (
+          <FocusInventoryList onAdminClick={() => setCurrentView('focus-admin')} />
+        )}
+        
+        {currentView === 'focus-admin' && (
+          <FocusInventoryAdmin onBackClick={() => setCurrentView('focus-list')} />
+        )}
 
       </main>
 
