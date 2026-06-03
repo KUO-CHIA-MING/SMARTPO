@@ -6,6 +6,8 @@
 
 | 日期與時間 (Date & Time) | 提交 (Commit) | 作者 (Author) | 提交訊息 (Message) |
 | :--- | :--- | :--- | :--- |
+| 2026-06-03 10:44 | `a93ed9f` | lester | docs: 修正 rules.md 內重複內容並載明精確 Git 時間格式指令 |
+| 2026-06-03 10:41 | `fd5458e` | lester | docs: 調整 Git 歷史紀錄格式為包含具體時間 |
 | 2026-06-03 10:36 | `4ec3839` | lester | chore: 自動更新 Git 提交紀錄 |
 | 2026-06-03 10:35 | `822b6e7` | lester | docs: 建立 git_commit_history.md 並將 Git 版控與更新紀錄規範加入 rules.md |
 | 2026-06-02 23:53 | `37666dd` | lester | docs: 追加日誌 #018 記錄 AI 開發日誌漏記與人類介入校正事件 |
