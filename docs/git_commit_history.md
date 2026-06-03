@@ -6,6 +6,7 @@
 
 | 日期 (Date) | 提交 (Commit) | 作者 (Author) | 提交訊息 (Message) |
 | :--- | :--- | :--- | :--- |
+| 2026-06-03 | `822b6e7` | lester | docs: 建立 git_commit_history.md 並將 Git 版控與更新紀錄規範加入 rules.md |
 | 2026-06-02 | `37666dd` | lester | docs: 追加日誌 #018 記錄 AI 開發日誌漏記與人類介入校正事件 |
 | 2026-06-02 | `8795eac` | lester | docs: 追加日誌 #017 記錄人機協同文件補漏之案例 |
 | 2026-06-02 | `76654a9` | lester | docs: 補齊 Phase 2 與 Phase 3 於 walkthrough.md 的開發成果紀錄 |
