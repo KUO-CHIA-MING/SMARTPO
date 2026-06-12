@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import axios from 'axios';
 
+
 const AIAssistantChat = ({ isOpen, onClose }) => {
     const [messages, setMessages] = useState([
         {
@@ -35,10 +36,15 @@ const AIAssistantChat = ({ isOpen, onClose }) => {
 
         try {
             const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/api';
+            
+            // 單次 API 請求：一次同步處理 Text-to-SQL + DB 查詢 + 數據解讀
             const response = await axios.post(`${BACKEND_URL}/ai/query`, { prompt: userMessage });
             
             if (response.data.success) {
-                setMessages(prev => [...prev, { role: 'assistant', content: response.data.message }]);
+                setMessages(prev => [...prev, { 
+                    role: 'assistant', 
+                    content: response.data.message 
+                }]);
             } else {
                 setMessages(prev => [...prev, { role: 'assistant', content: `⚠️ **系統提示**：\n${response.data.message}`, isError: true }]);
             }
@@ -48,6 +54,8 @@ const AIAssistantChat = ({ isOpen, onClose }) => {
                 errorMsg = '今日 AI 查詢額度已達上限，為防範超額費用，已中斷請求。請明日再試。';
             } else if (error.response && error.response.data && error.response.data.message) {
                 errorMsg = error.response.data.message;
+            } else if (error.message) {
+                errorMsg = error.message;
             }
             setMessages(prev => [...prev, { role: 'assistant', content: `🚨 **錯誤**：\n${errorMsg}`, isError: true }]);
         } finally {
@@ -123,7 +131,7 @@ const AIAssistantChat = ({ isOpen, onClose }) => {
                             </div>
                             <div className="px-6 py-4 rounded-2xl bg-white border border-slate-200 text-slate-500 rounded-tl-sm shadow-sm flex items-center gap-3">
                                 <Loader2 size={18} className="animate-spin text-indigo-500" />
-                                <span className="text-sm font-medium animate-pulse">正在進行沙盒資料庫比對...</span>
+                                <span className="text-sm font-medium animate-pulse">正在查詢資料庫並進行數據分析...</span>
                             </div>
                         </div>
                     )}
